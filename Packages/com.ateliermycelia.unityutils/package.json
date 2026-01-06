@@ -1,0 +1,16 @@
+{
+  "name": "com.ateliermycelia.unityutils",
+  "version": "1.0.3",
+  "displayName": "AtMycelia Unity Utils",
+  "description": "A collection of utility scripts that some of Atelier \nMycelia's other asset packages might need.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Atelier Mycelia"
+  },
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.6"
+  },
+  "samples": [
+    {}
+  ]
+}
