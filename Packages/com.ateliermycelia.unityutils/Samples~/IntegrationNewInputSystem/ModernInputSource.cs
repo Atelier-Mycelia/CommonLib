@@ -1,7 +1,5 @@
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
-#endif
 
 namespace AtMycelia.Common.InputUtils
 {
@@ -12,7 +10,6 @@ namespace AtMycelia.Common.InputUtils
     {
         // So that we can package this with the main utils without having to create a separate 
         // Integrations folder.
-#if ENABLE_INPUT_SYSTEM
         [SerializeField] private InputActionReference[] _actions = new InputActionReference[0];
 
         public override void Init()
@@ -47,6 +44,5 @@ namespace AtMycelia.Common.InputUtils
             base.Deinit();
             ToggleSubs(false);
         }
-#endif
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "com.ateliermycelia.unityutils",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "displayName": "AtMycelia Unity Utils",
   "description": "A collection of utility scripts that some of Atelier \nMycelia's other asset packages might need.",
   "unity": "2022.3",
@@ -11,6 +11,10 @@
     "com.unity.textmeshpro": "3.0.6"
   },
   "samples": [
-    {}
+    {
+      "displayName": "Integration: New Input System",
+      "description": "Utils that help other Atelier Mycelia packages work with the New Input System.",
+      "path": "Samples~/IntegrationNewInputSystem"
+    }
   ]
 }
