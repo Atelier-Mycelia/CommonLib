@@ -1,6 +1,6 @@
 using System;
 
-namespace AtMycelia.UI
+namespace AtMycelia.Ui
 {
     [Flags]
     public enum UIPointerEventType

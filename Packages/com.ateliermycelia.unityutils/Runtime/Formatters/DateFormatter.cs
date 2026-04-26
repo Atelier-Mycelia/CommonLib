@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using UnityEngine;
 
-namespace AtMycelia.UI
+namespace AtMycelia.Ui
 {
     [CreateAssetMenu(fileName = "NewDateFormatter", menuName = "Atelier Mycelia/UI/Formatters/DateFormatter", order = 1)]
     public class DateFormatter : TextFormatter, IDateFormatter

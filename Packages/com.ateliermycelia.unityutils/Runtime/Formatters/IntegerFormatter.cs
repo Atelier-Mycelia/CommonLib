@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-namespace AtMycelia.UI
+namespace AtMycelia.Ui
 {
     [CreateAssetMenu(fileName = "IntegerFormatter", menuName = "Atelier Mycelia/UI/Formatters/IntegerFormatter")]
     public class IntegerFormatter : TextFormatter
