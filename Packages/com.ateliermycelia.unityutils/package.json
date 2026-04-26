@@ -1,6 +1,6 @@
 {
   "name": "com.ateliermycelia.unityutils",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "displayName": "AtMycelia Unity Utils",
   "description": "A collection of utility scripts that some of Atelier \nMycelia's other asset packages might need.",
   "unity": "2022.3",
