@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace AtMycelia.UI
+namespace AtMycelia.Ui
 {
     public class SliderStep : MonoBehaviour
     {

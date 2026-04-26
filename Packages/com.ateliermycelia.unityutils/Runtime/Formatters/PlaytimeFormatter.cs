@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace AtMycelia.UI
+namespace AtMycelia.Ui
 {
     [CreateAssetMenu(fileName = "NewPlaytimeFormatter", menuName = "Atelier Mycelia/UI/Formatters/PlaytimeFormatter", order = 1)]
     public class PlaytimeFormatter : TextFormatter, IPlaytimeFormatter

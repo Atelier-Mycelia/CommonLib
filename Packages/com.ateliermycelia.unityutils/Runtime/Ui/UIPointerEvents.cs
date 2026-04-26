@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace AtMycelia.UI
+namespace AtMycelia.Ui
 {
     public class UIPointerEvents : MonoBehaviour, IPointerClickHandler, IPointerDownHandler,
         IPointerUpHandler, IPointerEnterHandler,
