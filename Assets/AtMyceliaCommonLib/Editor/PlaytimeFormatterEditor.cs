@@ -1,7 +1,6 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using System;
-using AtMycelia.Ui;
 
 namespace AtMycelia.Ui.EditorUtils
 {

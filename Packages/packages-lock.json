@@ -1,13 +1,5 @@
 {
   "dependencies": {
-    "com.ateliermycelia.unityutils": {
-      "version": "file:com.ateliermycelia.unityutils",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.textmeshpro": "3.0.6"
-      }
-    },
     "com.unity.collab-proxy": {
       "version": "2.11.2",
       "depth": 0,

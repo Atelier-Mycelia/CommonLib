@@ -13,4 +13,13 @@ namespace AtMycelia
         /// </summary>
         void OnPreCut();
     }
+
+    public interface IOnPostPasteHandler
+    {
+        /// <summary>
+        /// Meant to execute right after this instance is pasted. This is useful for
+        /// performing any necessary setup after the instance is added to the scene.
+        /// 
+        void OnPostPaste();
+    }
 }
