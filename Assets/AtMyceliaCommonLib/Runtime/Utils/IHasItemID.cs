@@ -2,6 +2,11 @@ namespace AtMycelia
 {
     public interface IHasItemID
     {
-        byte ItemId { get; set; }
+        object ItemId { get; set; }
+    }
+
+    public interface IHasItemId<T> : IHasItemID
+    {
+        new T ItemId { get; set; }
     }
 }
