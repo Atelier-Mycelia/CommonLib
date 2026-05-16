@@ -9,7 +9,7 @@ namespace AtMycelia
         /// <summary>
         /// Generates a unique key for any keyed type.
         /// </summary>
-        public static string GetUniqueKeyFor<T>(string suggestedKey, IList<T> keyedGroup,
+        public static string GetUniqueKeyFor<T>(string suggestedKey, IReadOnlyList<T> keyedGroup,
             T ignoreItem = null, string defaultKey = null)
             where T : class, IHasKey
         {
