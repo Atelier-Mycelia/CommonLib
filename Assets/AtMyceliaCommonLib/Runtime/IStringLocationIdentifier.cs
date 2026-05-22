@@ -6,6 +6,6 @@ namespace AtMycelia
     /// </summary>
     public interface IStringLocationIdentifier
     {
-        string GetLocationIdentifier();
+        string LocationIdentifier { get; };
     }
 }
