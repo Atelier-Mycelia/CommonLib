@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-namespace AtMycelia.EditorUtils
+namespace AtMycelia.EditorExt
 {
     public static class PointerEventExtensions
     {

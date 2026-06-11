@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityObj = UnityEngine.Object;
 
-namespace AtMycelia.EditorUtils
+namespace AtMycelia.EditorExt
 {
     /// <summary>
     /// IEditorAssetResolver isolates UnityEditor asset APIs (e.g. AssetDatabase, Resources) behind a small testable interface.

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityObj = UnityEngine.Object;
 
-namespace AtMycelia.EditorUtils
+namespace AtMycelia.EditorExt
 {
     public interface IEditorAssetResolver
     {
