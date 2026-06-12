@@ -10,3 +10,9 @@ This supports Unity 2022.3 and later.
 3. Paste the following URL: https://github.com/Atelier-Mycelia/CommonLib.git?path=Assets/AtMyceliaCommonLib
 4. Click **Add**. Unity will fetch the package and make it available in your project.
 5. If it asks you to install TextMeshPro or the new input sys, do so.
+
+# 🤖 AI Use Disclosure
+We use AI for:
+- Debugging
+- Small, repetitive tasks
+- Architecture improvements
