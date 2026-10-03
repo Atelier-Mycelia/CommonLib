@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace AtMycelia.EditorUtils
+namespace AtMycelia.EditorExt
 {
     [CustomPropertyDrawer(typeof(EnumFlagAttribute))]
     public class EnumFlagDrawer : PropertyDrawer

@@ -10,6 +10,16 @@ namespace AtMycelia.Collections
         /// Returns true if both lists contain the same elements
         /// (but not necessarily in the same order).
         /// </summary>
+        public static bool SameContentsAs<T>(this IList<T> thisList, IReadOnlyList<T> otherList)
+        {
+            if (thisList.Count != otherList.Count) return false;
+
+            HashSet<T> thisSet = new HashSet<T>(thisList);
+            HashSet<T> otherSet = new HashSet<T>(otherList);
+
+            return thisSet.SetEquals(otherSet);
+        }
+
         public static bool SameContentsAs<T>(this IList<T> thisList, IList<T> otherList)
         {
             if (thisList.Count != otherList.Count) return false;
@@ -64,10 +74,36 @@ namespace AtMycelia.Collections
             if (list.Count < capacity) list.Add(item);
         }
 
+        public static void AddRange<T>(this IList<T> toAddTo, IReadOnlyList<T> whatToAdd)
+        {
+            for (int i = 0; i < whatToAdd.Count; i++)
+            {
+                toAddTo.Add(whatToAdd[i]);
+            }
+        }
+
         public static void AddRange<T>(this IList<T> toAddTo, IList<T> whatToAdd)
         {
             for (int i = 0; i < whatToAdd.Count; i++)
             {
+                toAddTo.Add(whatToAdd[i]);
+            }
+        }
+
+        /// <summary>
+        /// AddRange but won't add stuff when toAddTo is at or above the specified capacity.
+        /// </summary>
+        public static void AddRange<T>(this IList<T> toAddTo, IReadOnlyList<T> whatToAdd, int capacity)
+        {
+            bool isAtCapacity = false;
+            for (int i = 0; i < whatToAdd.Count; i++)
+            {
+                isAtCapacity = toAddTo.Count >= capacity;
+                if (isAtCapacity)
+                {
+                    return;
+                }
+
                 toAddTo.Add(whatToAdd[i]);
             }
         }
@@ -87,6 +123,14 @@ namespace AtMycelia.Collections
                 }
 
                 toAddTo.Add(whatToAdd[i]);
+            }
+        }
+
+        public static void RemoveAllIn<T>(this IList<T> toRemoveFrom, IReadOnlyList<T> whatToRemove)
+        {
+            foreach (T item in whatToRemove)
+            {
+                toRemoveFrom.Remove(item);
             }
         }
 
@@ -128,17 +172,59 @@ namespace AtMycelia.Collections
             return false;
         }
 
-        public static bool AnyOverlapWith<T>(this IList<T> list, IList<T> otherList)
+        public static bool AnyOverlapWith<T>(this IList<T> list, IReadOnlyList<T> otherList)
         {
             for (int i = 0; i < list.Count; i++)
             {
-                if (otherList.Contains(list[i]))
-                    return true;
+                var currentItem = list[i];
+                for (int j = 0; j < otherList.Count; j++)
+                {
+                    if (currentItem.Equals(otherList[j]))
+                        return true;
+                }
+
             }
 
             return false;
         }
-    
+
+        public static bool AnyOverlapWith<T>(this IList<T> list, IList<T> otherList)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                var currentItem = list[i];
+                for (int j = 0; j < otherList.Count; j++)
+                {
+                    if (currentItem.Equals(otherList[j]))
+                        return true;
+                }
+
+            }
+
+            return false;
+        }
+
+        public static bool EndsWith<T>(this IList<T> list, IReadOnlyList<T> potentialEnding)
+        {
+            if (potentialEnding.Count > list.Count)
+            {
+                return false;
+            }
+
+            int offset = list.Count - potentialEnding.Count;
+            for (int i = 0; i < potentialEnding.Count; i++)
+            {
+                T expectedElem = list[offset + i];
+                T elemWeGot = potentialEnding[i];
+                if (!expectedElem.Equals(elemWeGot))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public static bool EndsWith<T>(this IList<T> list, IList<T> potentialEnding)
         {
             if (potentialEnding.Count > list.Count)

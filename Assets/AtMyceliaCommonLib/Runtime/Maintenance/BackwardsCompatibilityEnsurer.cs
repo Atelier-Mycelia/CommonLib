@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-namespace AtMycelia.EditorUtils
+namespace AtMycelia.EditorExt
 {
     /// <summary>
     /// Ensures that in response to certain editor events, the ApplyBackwardsCompatibility of all
