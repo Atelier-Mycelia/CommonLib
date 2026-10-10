@@ -11,29 +11,34 @@ namespace AtMycelia.EditorExt
     /// </summary>
     public sealed class DisplayDialogButton : IDisposable
     {
-        public void Init(Button reinitButton, DisplayDialogArgs dialogArgs,
+        /// <summary>
+        /// Sets up this instance to listen for clicks on the given Button, and decide what to show in the
+        /// DisplayDialog. The shouldBringUp field decides whether to show the dialog in response to the
+        /// button being clicked. The default behavior is to always show the dialog.
+        /// </summary>
+        public void Init(Button toListenFor, DisplayDialogArgs dialogArgs,
             Func<bool> shouldBringUp = null)
         {
-            _reinitButton = reinitButton ?? throw new ArgumentNullException(nameof(reinitButton));
+            _toListenFor = toListenFor ?? throw new ArgumentNullException(nameof(toListenFor));
             _dialogArgs = dialogArgs;
             _shouldBringUp = shouldBringUp ?? (() => true);
             SetSubs(true);
             _isDisposed = false;
         }
 
-        private Button _reinitButton;
+        private Button _toListenFor;
         private DisplayDialogArgs _dialogArgs;
         private Func<bool> _shouldBringUp;
-        
+
         private void SetSubs(bool on)
         {
             if (on)
             {
-                _reinitButton.clicked += OnButtonClicked;
+                _toListenFor.clicked += OnButtonClicked;
             }
             else
             {
-                _reinitButton.clicked -= OnButtonClicked;
+                _toListenFor.clicked -= OnButtonClicked;
             }
         }
 
@@ -80,7 +85,9 @@ namespace AtMycelia.EditorExt
         /// </summary>
         public event Action PromptDenied = delegate { };
 
-        private bool _isDisposed = false;
+        private bool _isDisposed = true;
+        //^ Defaults to true because this represents whether or not the object is
+        // currently tied to a button. If it is not tied to a button, it is considered disposed.
 
         public void Dispose()
         {
@@ -90,13 +97,19 @@ namespace AtMycelia.EditorExt
             }
 
             SetSubs(false);
-            PromptConfirmed = delegate { };
-            PromptDenied = delegate { };
-            BringUpDenied = delegate { };
+            if (ClearEventsOnDispose)
+            {
+                PromptConfirmed = delegate { };
+                PromptDenied = delegate { };
+                BringUpDenied = delegate { };
+            }
 
-            _reinitButton = null;
+            _toListenFor = null;
             _isDisposed = true;
         }
+
+        public bool ClearEventsOnDispose { get; set; } = true;
     }
 
 }
+
