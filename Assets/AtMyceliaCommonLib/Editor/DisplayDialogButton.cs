@@ -5,26 +5,16 @@ using UnityEngine.UIElements;
 namespace AtMycelia.EditorExt
 {
     /// <summary>
-    /// Handles wiring up the a button, showing a Display Dialog and executing an action
-    /// upon confirmation.
+    /// Handles wiring up a button, showing a Display Dialog prompt. Responses to the results of
+    /// the user's choice in said prompt are handled via events. This class is disposable, and
+    /// will unsubscribe from the button's clicked event when disposed.
     /// </summary>
     public sealed class DisplayDialogButton : IDisposable
     {
-        /// <summary>
-        /// Initializes internal references, subscribes to required events, and marks the instance as not disposed.
-        /// The shouldBringUp function is optional and can be used to decide whether or not to bring up the dialog
-        /// in response to the button-click. If not provided, it defaults to always returning true.
-        /// </summary>
-        /// <remarks>Subscribes to button events (SetSubs(true)) and clears the disposal state.</remarks>
-        /// <param name="reinitButton">Button that triggers reinitialization and whose event subscriptions will be managed.</param>
-        /// <param name="onConfirm">Callback invoked when the reinitialization is confirmed.</param>
-        /// <param name="dialogArgs">Optional dialog configuration values for the display logic.</param>
-        /// <exception cref="ArgumentNullException">Thrown when reinitButton or onConfirm is null.</exception>
-        public void Init(Button reinitButton, Action onConfirm,
-            DisplayDialogArgs dialogArgs, Func<bool> shouldBringUp = null)
+        public void Init(Button reinitButton, DisplayDialogArgs dialogArgs,
+            Func<bool> shouldBringUp = null)
         {
             _reinitButton = reinitButton ?? throw new ArgumentNullException(nameof(reinitButton));
-            _onConfirm = onConfirm ?? throw new ArgumentNullException(nameof(onConfirm));
             _dialogArgs = dialogArgs;
             _shouldBringUp = shouldBringUp ?? (() => true);
             SetSubs(true);
@@ -32,11 +22,9 @@ namespace AtMycelia.EditorExt
         }
 
         private Button _reinitButton;
-        private Action _onConfirm;
-        private bool _isDisposed = true;
         private DisplayDialogArgs _dialogArgs;
         private Func<bool> _shouldBringUp;
-
+        
         private void SetSubs(bool on)
         {
             if (on)
@@ -53,16 +41,24 @@ namespace AtMycelia.EditorExt
         {
             if (!_shouldBringUp())
             {
+                BringUpDenied();
                 return;
             }
 
             if (!ConfirmSelection())
             {
+                PromptDenied();
                 return;
             }
 
-            _onConfirm.Invoke();
+            PromptConfirmed();
         }
+
+        /// <summary>
+        /// Occurs when a bring-up request is denied.
+        /// </summary>
+        /// <remarks>Initialized to an empty delegate to allow invocation without null checks.</remarks>
+        public event Action BringUpDenied = delegate { };
 
         /// <summary>
         /// Isolated so it's easy to override behavior (e.g. in tests) without
@@ -70,12 +66,21 @@ namespace AtMycelia.EditorExt
         /// </summary>
         private bool ConfirmSelection()
         {
-            return EditorUtility.DisplayDialog(
-                _dialogArgs.title,
-                _dialogArgs.message,
-                _dialogArgs.okText,
-                _dialogArgs.cancelText);
+            return EditorUtility.DisplayDialog(_dialogArgs.title, _dialogArgs.message,
+                _dialogArgs.acceptanceText, _dialogArgs.denialText);
         }
+
+        /// <summary>
+        /// Occurs when the user chooses the confirmation option in the prompt.
+        /// </summary>
+        public event Action PromptConfirmed = delegate { };
+
+        /// <summary>
+        /// Occurs when the user chooses the denial option in the prompt.
+        /// </summary>
+        public event Action PromptDenied = delegate { };
+
+        private bool _isDisposed = false;
 
         public void Dispose()
         {
@@ -85,8 +90,11 @@ namespace AtMycelia.EditorExt
             }
 
             SetSubs(false);
+            PromptConfirmed = delegate { };
+            PromptDenied = delegate { };
+            BringUpDenied = delegate { };
+
             _reinitButton = null;
-            _onConfirm = null;
             _isDisposed = true;
         }
     }
