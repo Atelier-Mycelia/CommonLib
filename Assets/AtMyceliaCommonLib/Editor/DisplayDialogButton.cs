@@ -10,28 +10,35 @@ namespace AtMycelia.EditorExt
     /// </summary>
     public sealed class DisplayDialogButton : IDisposable
     {
-        public void Init(Button reinitButton, Action onConfirm, DisplayDialogArgs dialogArgs)
+        /// <summary>
+        /// Initializes internal references, subscribes to required events, and marks the instance as not disposed.
+        /// The shouldBringUp function is optional and can be used to decide whether or not to bring up the dialog
+        /// in response to the button-click. If not provided, it defaults to always returning true.
+        /// </summary>
+        /// <remarks>Subscribes to button events (SetSubs(true)) and clears the disposal state.</remarks>
+        /// <param name="reinitButton">Button that triggers reinitialization and whose event subscriptions will be managed.</param>
+        /// <param name="onConfirm">Callback invoked when the reinitialization is confirmed.</param>
+        /// <param name="dialogArgs">Optional dialog configuration values for the display logic.</param>
+        /// <exception cref="ArgumentNullException">Thrown when reinitButton or onConfirm is null.</exception>
+        public void Init(Button reinitButton, Action onConfirm,
+            DisplayDialogArgs dialogArgs, Func<bool> shouldBringUp = null)
         {
             _reinitButton = reinitButton ?? throw new ArgumentNullException(nameof(reinitButton));
-            _onReinitConfirmed = onConfirm ?? throw new ArgumentNullException(nameof(onConfirm));
+            _onConfirm = onConfirm ?? throw new ArgumentNullException(nameof(onConfirm));
             _dialogArgs = dialogArgs;
+            _shouldBringUp = shouldBringUp ?? (() => true);
             SetSubs(true);
             _isDisposed = false;
         }
 
         private Button _reinitButton;
-        private Action _onReinitConfirmed;
-        private string _dialogMessage;
+        private Action _onConfirm;
         private bool _isDisposed = true;
         private DisplayDialogArgs _dialogArgs;
+        private Func<bool> _shouldBringUp;
 
         private void SetSubs(bool on)
         {
-            if (_reinitButton == null)
-            {
-                return;
-            }
-
             if (on)
             {
                 _reinitButton.clicked += OnButtonClicked;
@@ -44,26 +51,25 @@ namespace AtMycelia.EditorExt
 
         private void OnButtonClicked()
         {
-            if (!ConfirmReinit())
+            if (!_shouldBringUp())
             {
                 return;
             }
 
-            _onReinitConfirmed.Invoke();
+            if (!ConfirmSelection())
+            {
+                return;
+            }
+
+            _onConfirm.Invoke();
         }
 
         /// <summary>
         /// Isolated so it's easy to override behavior (e.g. in tests) without
         /// needing to mock out EditorUtility.
         /// </summary>
-        private bool ConfirmReinit()
+        private bool ConfirmSelection()
         {
-            //return EditorUtility.DisplayDialog(
-            //    "Reinit All Entries",
-            //    "This will reset every entry in this Control Panel back to its " +
-            //    "startup state, discarding any unsaved runtime changes. Continue?",
-            //    "Reinit",
-            //    "Cancel");
             return EditorUtility.DisplayDialog(
                 _dialogArgs.title,
                 _dialogArgs.message,
@@ -80,10 +86,9 @@ namespace AtMycelia.EditorExt
 
             SetSubs(false);
             _reinitButton = null;
-            _onReinitConfirmed = null;
+            _onConfirm = null;
             _isDisposed = true;
         }
     }
 
-    
 }
