@@ -24,7 +24,7 @@ namespace AtMycelia.EditorExt
         private Button _reinitButton;
         private DisplayDialogArgs _dialogArgs;
         private Func<bool> _shouldBringUp;
-        
+
         private void SetSubs(bool on)
         {
             if (on)
@@ -80,7 +80,9 @@ namespace AtMycelia.EditorExt
         /// </summary>
         public event Action PromptDenied = delegate { };
 
-        private bool _isDisposed = false;
+        private bool _isDisposed = true;
+        //^ Defaults to true because this represents whether or not the object is
+        // currently tied to a button. If it is not tied to a button, it is considered disposed.
 
         public void Dispose()
         {
@@ -90,13 +92,19 @@ namespace AtMycelia.EditorExt
             }
 
             SetSubs(false);
-            PromptConfirmed = delegate { };
-            PromptDenied = delegate { };
-            BringUpDenied = delegate { };
+            if (ClearEventsOnDispose)
+            {
+                PromptConfirmed = delegate { };
+                PromptDenied = delegate { };
+                BringUpDenied = delegate { };
+            }
 
             _reinitButton = null;
             _isDisposed = true;
         }
+
+        public bool ClearEventsOnDispose { get; set; } = true;
     }
 
 }
+
