@@ -12,7 +12,9 @@ namespace AtMycelia.EditorExt
     /// Ensures that in response to certain editor events, the ApplyBackwardsCompatibility of all
     /// Components implementing IBackwardsCompatibilityApplier is called.
     /// </summary>
+#if UNITY_EDITOR
     [InitializeOnLoad]
+#endif
     public static class BackwardsCompatibilityEnsurer 
     {
         static BackwardsCompatibilityEnsurer()
