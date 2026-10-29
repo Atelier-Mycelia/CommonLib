@@ -1,10 +1,13 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using System.IO;
+#endif
 
 namespace AtMycelia
 {
     public static class AssetUtils
     {
+#if UNITY_EDITOR
         /// <summary>
         /// Ensures that the given folder path exists in the AssetDatabase.
         /// Creates any missing subfolders step by step.
@@ -33,5 +36,6 @@ namespace AtMycelia
                 current = next;
             }
         }
+#endif
     }
 }
