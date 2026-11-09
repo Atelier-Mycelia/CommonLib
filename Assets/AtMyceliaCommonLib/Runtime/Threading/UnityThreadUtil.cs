@@ -9,8 +9,8 @@ namespace AtMycelia
         private static int _mainThreadId;
         private static bool _initialized;
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Init()
+        /// <summary>Called by MaintenanceRunner.</summary>
+        public static void Init()
         {
             _mainThreadId = Thread.CurrentThread.ManagedThreadId;
             _initialized = true;
